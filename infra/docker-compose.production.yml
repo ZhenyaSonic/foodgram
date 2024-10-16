@@ -13,7 +13,7 @@ services:
       - pg_data:/var/lib/postgresql/data
   
   backend:
-    build: ../backend/
+    image: ligay/foodgram_backend
     env_file: ../.env
     depends_on:
       - db
@@ -22,7 +22,7 @@ services:
       - media:/app/media
   
   frontend:
-    build: ../frontend
+    image: ligay/foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
@@ -40,3 +40,4 @@ services:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
       - static:/static
+      - media:/app/media
