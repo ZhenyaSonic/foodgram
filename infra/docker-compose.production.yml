@@ -13,7 +13,7 @@ services:
       - pg_data:/var/lib/postgresql/data
   
   backend:
-    image: ligay/foodgram_backend
+    image: zhenyasonic/foodgram_backend
     env_file: ../.env
     depends_on:
       - db
@@ -22,7 +22,7 @@ services:
       - media:/app/media
   
   frontend:
-    image: ligay/foodgram_frontend
+    image: zhenyasonic/foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
