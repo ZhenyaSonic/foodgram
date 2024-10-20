@@ -24,7 +24,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!пше
+# SECURITY WARNING: keep the secret key used in production secret!
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='*').split()
