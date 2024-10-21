@@ -137,7 +137,7 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'users.User'
 
-CSRF_TRUSTED_ORIGINS = ['https://evgeniyfoodgram.zapto.org']
+# CSRF_TRUSTED_ORIGINS = ['https://evgeniyfoodgram.zapto.org']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
