@@ -25,7 +25,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production!1
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='127.0.0.1,localhost,84.201.166.140,evgeniyfoodgram.zapto.org').split(',')
 
