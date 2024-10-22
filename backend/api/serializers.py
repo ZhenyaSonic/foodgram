@@ -15,6 +15,7 @@ from recipes.models import (
 from users.models import User
 from .utils import is_subscribed
 from .fields import Base64ImageField
+from foodgram.settings import MIN_VALUE, MAX_VALUE
 
 
 class CustomUserSerializer(UserSerializer):
@@ -44,7 +45,10 @@ class CustomUserSerializer(UserSerializer):
             ext = format.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr), name=f'avatar.{ext}')
             instance.avatar.save(f'avatar.{ext}', data, save=True)
-            return super().update(instance, validated_data)
+        if not avatar_data:
+            raise serializers.ValidationError('Добавьте поле аватар.')
+
+        return super().update(instance, validated_data)
 
     def delete_avatar(self):
         user = self.instance
@@ -170,34 +174,31 @@ class RecipeGetSerializer(serializers.ModelSerializer):
     def get_is_favorited(self, obj):
         user = self.context['request'].user
         if user.is_authenticated:
-            return Favorite.objects.filter(author=user, recipe=obj).exists()
+            return obj.favorite.filter(author=user).exists()
         return False
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context['request'].user
         if user.is_authenticated:
-            return ShoppingCart.objects.filter(
-                author=user,
-                recipe=obj
-            ).exists()
+            return user.shopping_cart.filter(recipe=obj).exists()
         return False
 
 
 class IngredientsAmountSerializer(serializers.ModelSerializer):
 
     id = serializers.IntegerField()
-    amount = serializers.IntegerField()
+    amount = serializers.IntegerField(
+        MIN_VALUE,
+        MAX_VALUE,
+        error_messages={
+            'MIN_VALUE': 'Количество ингредиента должно быть не менее 1.',
+            'MAX_VALUE': 'Количество ингредиента не может превышать 32_000.'
+        }
+    )
 
     class Meta:
         model = Ingredient
         fields = ('id', 'amount')
-
-    def validate_amount(self, value):
-        if value <= 0:
-            raise serializers.ValidationError(
-                'Количество ингредиента должно быть больше 0.'
-            )
-        return value
 
 
 class CreateRecipeSerializer(serializers.ModelSerializer):

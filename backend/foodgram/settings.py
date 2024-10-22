@@ -152,3 +152,6 @@ DJOSER = {
         'user': ['rest_framework.permissions.AllowAny'],
     },
 }
+
+MIN_VALUE = 1
+MAX_VALUE = 32000

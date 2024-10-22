@@ -3,9 +3,7 @@ from django.db.models.constraints import UniqueConstraint
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 from users.models import User
-
-Min_number = 1
-Max_number = 32000
+from foodgram.settings import MIN_VALUE, MAX_VALUE
 
 
 class Tag(models.Model):
@@ -83,8 +81,8 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления',
         validators=[
-            MinValueValidator(Min_number),
-            MaxValueValidator(Max_number)
+            MinValueValidator(MIN_VALUE),
+            MaxValueValidator(MAX_VALUE)
         ]
     )
 
@@ -114,8 +112,8 @@ class RecipeIngredient(models.Model):
     amount = models.PositiveSmallIntegerField(
         'Количество',
         validators=[
-            MinValueValidator(Min_number),
-            MaxValueValidator(Max_number)
+            MinValueValidator(MIN_VALUE),
+            MaxValueValidator(MAX_VALUE)
         ]
     )
 
