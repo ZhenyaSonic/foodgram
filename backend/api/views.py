@@ -255,4 +255,7 @@ def short_link(request, pk):
         if id_recipe == pk:
             return redirect(f'/recipes/{recipe.id}/')
 
-    return print(f'Не существует {recipe.id}')
+    return HttpResponse(
+        f'Не существует рецепта с коротким кодом {pk}',
+        status=404
+    )
