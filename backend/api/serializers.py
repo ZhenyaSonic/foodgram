@@ -186,11 +186,11 @@ class IngredientsAmountSerializer(serializers.ModelSerializer):
 
     id = serializers.IntegerField()
     amount = serializers.IntegerField(
-        MIN_VALUE,
-        MAX_VALUE,
+        min_value=MIN_VALUE,
+        max_value=MAX_VALUE,
         error_messages={
-            'MIN_VALUE': 'Количество ингредиента должно быть не менее 1.',
-            'MAX_VALUE': 'Количество ингредиента не может превышать 32000.'
+            'min_value': 'Количество ингредиента должно быть не менее 1.',
+            'max_value': 'Количество ингредиента не может превышать 32000.'
         }
     )
 
@@ -209,11 +209,11 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
     ingredients = IngredientsAmountSerializer(many=True)
     image = Base64ImageField()
     cooking_time = serializers.IntegerField(
-        MIN_VALUE,
-        MAX_VALUE,
+        min_value=MIN_VALUE,
+        max_value=MAX_VALUE,
         error_messages={
-            'MIN_VALUE': 'Время приготовления должно быть не менее 1 минуты.',
-            'MAX_VALUE': 'Время приготовления не может превышать 32000 минут.'
+            'min_value': 'Время приготовления должно быть не менее 1 минуты.',
+            'max_value': 'Время приготовления не может превышать 32000 минут.'
         }
     )
 
