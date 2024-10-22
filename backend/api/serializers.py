@@ -9,8 +9,6 @@ from recipes.models import (
     RecipeIngredient,
     Recipe,
     Tag,
-    ShoppingCart,
-    Favorite
 )
 from users.models import User
 from .utils import is_subscribed
@@ -192,7 +190,7 @@ class IngredientsAmountSerializer(serializers.ModelSerializer):
         MAX_VALUE,
         error_messages={
             'MIN_VALUE': 'Количество ингредиента должно быть не менее 1.',
-            'MAX_VALUE': 'Количество ингредиента не может превышать 32_000.'
+            'MAX_VALUE': 'Количество ингредиента не может превышать 32000.'
         }
     )
 
@@ -210,6 +208,14 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
     author = CustomUserSerializer(read_only=True)
     ingredients = IngredientsAmountSerializer(many=True)
     image = Base64ImageField()
+    cooking_time = serializers.IntegerField(
+        MIN_VALUE,
+        MAX_VALUE,
+        error_messages={
+            'MIN_VALUE': 'Время приготовления должно быть не менее 1 минуты.',
+            'MAX_VALUE': 'Время приготовления не может превышать 32000 минут.'
+        }
+    )
 
     class Meta:
         model = Recipe
