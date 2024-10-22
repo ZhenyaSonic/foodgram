@@ -4,6 +4,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from users.models import User
 
+Min_number = 1
+Max_number = 32000
+
 
 class Tag(models.Model):
 
@@ -20,6 +23,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -39,6 +43,7 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -75,9 +80,12 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Теги',
     )
-    cooking_time = models.PositiveIntegerField(
+    cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления',
-        validators=[MinValueValidator(1), MaxValueValidator(999)]
+        validators=[
+            MinValueValidator(Min_number),
+            MaxValueValidator(Max_number)
+        ]
     )
 
     class Meta:
@@ -103,9 +111,12 @@ class RecipeIngredient(models.Model):
         related_name='recipe_ingredients',
         verbose_name='Ингредиент',
     )
-    amount = models.PositiveIntegerField(
+    amount = models.PositiveSmallIntegerField(
         'Количество',
-        validators=[MinValueValidator(1), MaxValueValidator(999)]
+        validators=[
+            MinValueValidator(Min_number),
+            MaxValueValidator(Max_number)
+        ]
     )
 
     class Meta:
@@ -117,6 +128,7 @@ class RecipeIngredient(models.Model):
                 name='unique_ingredient'
             )
         ]
+        ordering = ('ingredient__name',)
 
     def __str__(self):
         return f'{self.ingredient.name}'
@@ -145,6 +157,7 @@ class ShoppingCart(models.Model):
                 name='unique_shoppingcart'
             )
         ]
+        ordering = ('recipe__name',)
 
     def __str__(self):
         return f'{self.recipe.name}'
@@ -173,6 +186,7 @@ class Favorite(models.Model):
                 name='unique_favorite'
             )
         ]
+        ordering = ('recipe__name',)
 
     def __str__(self):
         return f'{self.recipe.name}'
