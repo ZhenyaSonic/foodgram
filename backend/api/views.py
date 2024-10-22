@@ -1,5 +1,4 @@
 import csv
-import hashlib
 
 from django.urls import reverse
 from django.db.models import Sum
