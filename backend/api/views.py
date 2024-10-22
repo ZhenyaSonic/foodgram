@@ -15,6 +15,7 @@ from djoser.views import UserViewSet
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import CustomPagination
 from .permissions import AdminOrAuthorOrReadOnly
+from .utils import generate_short_link_code
 from .serializers import (
     CreateRecipeSerializer,
     IngredientSerializer,
@@ -225,7 +226,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_link(self, request, pk=None):
         recipe = get_object_or_404(Recipe, pk=pk)
 
-        short_link_code = hashlib.md5(str(recipe.id).encode()).hexdigest()[:6]
+        short_link_code = generate_short_link_code(recipe.id)
         short_link = request.build_absolute_uri(
             reverse('short_link', kwargs={'pk': short_link_code})
         )
@@ -250,7 +251,7 @@ def short_link(request, pk):
     recipes = Recipe.objects.all()
 
     for recipe in recipes:
-        id_recipe = hashlib.md5(str(recipe.id).encode()).hexdigest()[:6]
+        id_recipe = generate_short_link_code(recipe.id)
         if id_recipe == pk:
             return redirect(f'/recipes/{recipe.id}/')
 
