@@ -95,8 +95,6 @@ class CustomUserViewSet(UserViewSet):
         user = request.user
 
         if request.method == 'POST':
-            if author == user:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
             if user.subscriptions.filter(author=author).exists():
                 return Response(
                     {'detail': 'Вы уже подписаны на этого пользователя.'},
