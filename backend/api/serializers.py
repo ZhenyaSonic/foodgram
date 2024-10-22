@@ -45,10 +45,6 @@ class CustomUserSerializer(UserSerializer):
             data = ContentFile(base64.b64decode(imgstr), name=f'avatar.{ext}')
             instance.avatar.save(f'avatar.{ext}', data, save=True)
             return super().update(instance, validated_data)
-        else:
-            raise serializers.ValidationError(
-                'Добавьте поле аватар.'
-            )
 
     def delete_avatar(self):
         user = self.instance
