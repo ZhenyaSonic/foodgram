@@ -224,44 +224,48 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             'image', 'text', 'cooking_time'
         )
 
-    def validate_ingredients(self, value):
-        if not value:
+    def validate_ingredients_and_tags(self, ingredients, tags):
+        if not ingredients:
             raise serializers.ValidationError('Рецепт без ингредиентов.')
 
-        for ingredient in value:
-            if not Ingredient.objects.filter(id=ingredient['id']).exists():
-                raise serializers.ValidationError(
-                    f'Ингредиент {ingredient["id"]} не существует.'
-                )
+        if not tags:
+            raise serializers.ValidationError('Рецепт без Тегов.')
 
         ingredient_ids = set()
-        for ingredient in value:
+        tag_names = set()
+
+        # Объединенный цикл для проверки ингредиентов и тегов
+        for ingredient in ingredients:
             ingredient_id = ingredient['id']
+
+            # Проверка существования ингредиента
+            if not Ingredient.objects.filter(id=ingredient_id).exists():
+                raise serializers.ValidationError(
+                    f'Ингредиент {ingredient_id} не существует.'
+                )
+
+            # Проверка на дубликаты ингредиентов
             if ingredient_id in ingredient_ids:
                 raise serializers.ValidationError(
                     f'Ингредиент с ID {ingredient_id} уже добавлен.'
                 )
             ingredient_ids.add(ingredient_id)
-        return value
 
-    def validate_tags(self, value):
-        if not value:
-            raise serializers.ValidationError('Рецепт без Тегов.')
-
-        for tag in value:
+        for tag in tags:
+            # Проверка существования тега
             if not Tag.objects.filter(name=tag).exists():
                 raise serializers.ValidationError(
                     f'Данного тэга {tag} нет в списке доступных.'
                 )
 
-        set_value = set()
-        for item in value:
-            if item in set_value:
+            # Проверка на дубликаты тегов
+            if tag in tag_names:
                 raise serializers.ValidationError(
                     'Повторяющих тегов не должно быть.'
                 )
-            set_value.add(item)
-        return value
+            tag_names.add(tag)
+
+        return ingredients, tags
 
     def add_recipe_ingredients(self, ingredients, recipe):
         recipe_ingredients = [
