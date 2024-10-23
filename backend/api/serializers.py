@@ -103,11 +103,11 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         return data
 
     def get_is_subscribed(self, obj):
-        request = self.context.get('request')
+        request = self.context['request']
         return is_subscribed(request.user, obj)
 
     def get_recipes(self, obj):
-        request = self.context.get('request')
+        request = self.context['request']
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()
         if limit:
