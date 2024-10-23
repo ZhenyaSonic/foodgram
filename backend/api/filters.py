@@ -5,15 +5,20 @@ from users.models import User
 
 
 class IngredientFilter(django_filters.FilterSet):
-
-    name = django_filters.CharFilter(
+    name_starts_with = django_filters.CharFilter(
         field_name='name',
-        lookup_expr='istartswith'
+        lookup_expr='istartswith',
+        label='Starts with'
+    )
+    name_contains = django_filters.CharFilter(
+        field_name='name',
+        lookup_expr='icontains',
+        label='Contains'
     )
 
     class Meta:
         model = Ingredient
-        fields = ['name']
+        fields = ['name_starts_with', 'name_contains']
 
 
 class RecipeFilter(django_filters.FilterSet):
