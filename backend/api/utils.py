@@ -1,4 +1,3 @@
-# from users.models import Subscription
 import hashlib
 
 SHORT_LINK_LENGTH = 6

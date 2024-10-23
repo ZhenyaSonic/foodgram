@@ -9,7 +9,10 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 from djoser.views import UserViewSet
+
+from http import HTTPStatus
 
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import CustomPagination
@@ -248,7 +251,7 @@ def short_link(request, pk):
         if id_recipe == pk:
             return redirect(f'/recipes/{recipe.id}/')
 
-    return HttpResponse(
-        f'Не существует рецепта с коротким кодом {pk}',
-        status=404
+    raise NotFound(
+        detail=f'Не существует рецепта с коротким кодом {pk}',
+        code=HTTPStatus.NOT_FOUND
     )
